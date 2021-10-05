@@ -3,8 +3,11 @@ package com.hh1305.message_queue.config;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Properties;
+
+import com.hh1305.message_queue.database.Query;
 
 public class Config {
 
@@ -87,6 +90,28 @@ public class Config {
 		setTimePush(Integer.valueOf(properties.getProperty("timepush")));
 		setNumberOfConsumers(Integer.valueOf(properties.getProperty("numofconsumers")));
 		setNumberOfProducers(Integer.valueOf(properties.getProperty("numofproducers")));
+
+	}
+
+	public void loadConfigFromDB() {
+		String query = "SELECT * FROM config";
+		ResultSet rs = Query.query(query);
+
+		if (rs != null) {
+			try {
+
+				rs.next();
+				setMaxSize(rs.getInt(1));
+				setTimePush(rs.getInt(2));
+				setTimePull(rs.getInt(3));
+				setNumberOfProducers(rs.getInt(4));
+				setNumberOfConsumers(rs.getInt(5));
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		}
 
 	}
 

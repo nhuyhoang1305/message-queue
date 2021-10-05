@@ -1,17 +1,23 @@
 package com.hh1305.message_queue.app;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 import com.hh1305.message_queue.config.Config;
+import com.hh1305.message_queue.database.ConnectionManager;
 
 /**
  * Hello world!
  *
  */
 public class App {
+	
 	public static void main(String[] args) {
 
 		Config config = new Config();
-
-		config.loadFromProperties("config.properties");
+		config.loadConfigFromDB();
 
 		MessageQueue messageQueue = new MessageQueue(config.getMaxSize());
 
@@ -42,6 +48,8 @@ public class App {
 		for (int i = 0; i < threads.length; ++i) {
 			threads[i].start();
 		}
+		
 
 	}
+
 }

@@ -33,7 +33,8 @@ public class Producer implements Runnable {
 	}
 
 	public void pushMessage(Message message) {
-		System.out.println(Thread.currentThread().getName() + " added " + message.toString());
+		// System.out.println(Thread.currentThread().getName() + " added " +
+		// message.toString());
 		messageQueue.pushMessage(message);
 	}
 }

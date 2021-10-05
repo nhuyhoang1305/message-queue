@@ -1,5 +1,7 @@
 package com.hh1305.message_queue.app;
 
+import com.hh1305.message_queue.database.Query;
+
 public class Consumer implements Runnable {
 
 	private MessageQueue messageQueue;
@@ -13,9 +15,10 @@ public class Consumer implements Runnable {
 	public void run() {
 		while (true) {
 			try {
-
-				Message message = pullMessage();
-				printMessage(message);
+				synchronized (this) {
+					Message message = pullMessage();
+					insertIntoDB(message);
+				}
 				Thread.sleep(timeToPull * 1000);
 
 			} catch (InterruptedException e) {
@@ -30,6 +33,14 @@ public class Consumer implements Runnable {
 
 	public Message pullMessage() {
 		return messageQueue.remove();
+	}
+
+	public void insertIntoDB(Message message) {
+		String query = "INSERT INTO `message` VALUES('" + message.getMessage() + "','"
+				+ Thread.currentThread().getName() + "')";
+		Query.insert(query);
+		System.out.println("Insert successfully!");
+
 	}
 
 	public void printMessage(Message message) {
