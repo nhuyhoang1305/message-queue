@@ -1,20 +1,20 @@
-package com.hh1305.app;
+package com.hh1305.message_queue.app;
 
-import com.hh1305.utils.Generate;
+import com.hh1305.message_queue.utils.Generate;
 
-public class Producer implements Runnable{
+public class Producer implements Runnable {
 
 	private MessageQueue messageQueue;
 	private int timeToGenerate = 1;
-	
-	public Producer (MessageQueue mQ) {
+
+	public Producer(MessageQueue mQ) {
 		messageQueue = mQ;
 	}
-	
+
 	public void setTime(int time) {
 		timeToGenerate = time;
 	}
-	
+
 	@Override
 	public void run() {
 		while (true) {
@@ -27,11 +27,11 @@ public class Producer implements Runnable{
 			}
 		}
 	}
-	
+
 	public Message generateMessage() {
 		return Generate.generateMessage();
 	}
-	
+
 	public void pushMessage(Message message) {
 		System.out.println(Thread.currentThread().getName() + " added " + message.toString());
 		messageQueue.pushMessage(message);

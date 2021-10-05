@@ -1,4 +1,10 @@
-package com.hh1305.config;
+package com.hh1305.message_queue.config;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+
+import java.util.Properties;
 
 public class Config {
 
@@ -64,6 +70,24 @@ public class Config {
 
 	public void setNumberOfConsumers(int numberOfConsumers) {
 		this.numberOfConsumers = numberOfConsumers;
+	}
+
+	public void loadFromProperties(String fileName) {
+		Properties properties = new Properties();
+		String path = System.getProperty("user.dir") + "\\src\\resources\\" + fileName;
+		// System.out.println(path);
+		try {
+			properties.load(new FileReader(new File(path)));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		setMaxSize(Integer.valueOf(properties.getProperty("maxsizeofqueue")));
+		setTimePull(Integer.valueOf(properties.getProperty("timepull")));
+		setTimePush(Integer.valueOf(properties.getProperty("timepush")));
+		setNumberOfConsumers(Integer.valueOf(properties.getProperty("numofconsumers")));
+		setNumberOfProducers(Integer.valueOf(properties.getProperty("numofproducers")));
+
 	}
 
 }
